@@ -32,7 +32,7 @@ const port = 8000
 // })
 
 const connect = () => {
-    mongoose.connect(process.env.MONGO_URI )
+    mongoose.connect('mongodb+srv://muhammadhasan3866:utt301xtNx6DSUVR@cluster0.uue1ckw.mongodb.net/?retryWrites=true&w=majority' )
     .then(()=> {
         console.log('Connect to DB')
     })
