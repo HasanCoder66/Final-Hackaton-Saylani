@@ -1,8 +1,8 @@
 import mongoose from "mongoose"
-import bcryptjs from "bcryptjs"
+import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
-import User from '../models/userSchema.js'
-import { createError } from "../error.js";
+import User from '../model/userSchema.js'
+// import { createError } from "../error.js";
 
 
 
@@ -11,8 +11,8 @@ import { createError } from "../error.js";
 // localhost:8000/auth/register
 export const register = async (req, res, next) => {
     try {
-        const salt = bcryptjs.genSaltSync(10);
-        const hash = bcryptjs.hashSync(req.body.password, salt);
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(req.body.password, salt);
         const newUser = new User({ ...req.body, password : hash})
 
         await newUser.save()
@@ -32,7 +32,7 @@ export const login = async (req, res, next) => {
        const user = await User.findOne({name : req.body.name})
        if(!user) return next(createError(404, 'user not found sorry!'))
 
-       const isCorrect = await bcryptjs.compare(req.body.password , user.password)
+       const isCorrect = await bcrypt.compare(req.body.password , user.password)
        if(!isCorrect) return next(createError(400, 'wrong Credientials!'))
 
        const {password, ...others} = user._doc  
