@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import bcrypt from 'bcrypt'
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken'
 import User from '../model/userSchema.js'
 // import { createError } from "../error.js";
 
@@ -9,6 +9,11 @@ import User from '../model/userSchema.js'
 
 // register
 // localhost:8000/auth/register
+
+
+
+
+
 export const register = async (req, res, next) => {
     try {
         const salt = bcrypt.genSaltSync(10);
@@ -29,14 +34,15 @@ export const register = async (req, res, next) => {
 // localhost:8000/auth/register
 export const login = async (req, res, next) => {
     try {
-       const user = await User.findOne({name : req.body.name})
-       if(!user) return next(createError(404, 'user not found sorry!'))
+       const user = await User.findOne({email : req.body.email})
+    //    if(!user) return next(createError(404, 'user not found sorry!'))
+       if(!user) return  res.send('user not found')
 
        const isCorrect = await bcrypt.compare(req.body.password , user.password)
        if(!isCorrect) return next(createError(400, 'wrong Credientials!'))
 
        const {password, ...others} = user._doc  
-       const token = jwt.sign({id : user._id  }, process.env.JWT)
+       const token = jwt.sign({id : user._id  }, process.env.JWT_SECRET_KEY)
 
        res.cookie("access_token", token,{
         httpOnly : true,

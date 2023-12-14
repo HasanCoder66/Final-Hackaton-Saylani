@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword } from "../../Firebase/config";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 // import Footer from "../Footer/Footer";
 
 export default function Signup() {
@@ -13,10 +14,42 @@ export default function Signup() {
   const userName = useRef();
   const email = useRef();
   const password = useRef();
-  const cPassword = useRef();
+  // const cPassword = useRef();
 
-  const signupHandler = () => {
+  // Signup with Firebase
+  const signupHandlerWithFirebase = (e) => {
+    e.preventDefault();
+
+    console.log(email);
+    console.log(password);
+    console.log(userName);
+
+    if (
+      email.current.value === "" ||
+      userName.current.value === "" ||
+      password.current.value === ""
+    ) {
+      // console.log("Missing fields")
+      toast.error("Missing fields", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+    } else if (password.length < 8) {
+      toast.warning("Password must be atleast 8 characters long", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+    } 
     console.log("signup handler is working");
+
     createUserWithEmailAndPassword(
       auth,
       email?.current?.value,
@@ -44,6 +77,56 @@ export default function Signup() {
         console.log(errorMessage);
         // ..
       });
+  };
+
+  const signupHandlerWithMongoDb = async (e) => {
+    e.preventDefault();
+
+    console.log(email);
+    console.log(password);
+    console.log(userName);
+
+    if (
+      email.current.value === "" ||
+      userName.current.value === "" ||
+      password.current.value === ""
+    ) {
+      // console.log("Missing fields")
+      toast.error("Missing fields", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+    } else if (password.length < 8) {
+      toast.warning("Password must be atleast 8 characters long", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+    } 
+    console.log("signup handler is working");
+    const userCredential = {
+      userName: userName.current.value,
+      email: email.current.value,
+      password: password.current.value,
+    };
+
+    console.log(userCredential);
+    try {
+      const response = await axios.post(
+        `http://localhost:8500/api/auth/register`,
+        userCredential
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -74,14 +157,17 @@ export default function Signup() {
                 className="loginInput"
                 ref={password}
               />
-              <input
+              {/* <input
                 placeholder="Confirm Password "
                 type="password"
                 className="loginInput"
                 ref={cPassword}
-              />
+              /> */}
 
-              <button className="loginButton" onClick={signupHandler}>
+              <button
+                className="loginButton"
+                onClick={signupHandlerWithMongoDb}
+              >
                 {" "}
                 Sign Up
               </button>

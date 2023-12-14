@@ -5,6 +5,8 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+
 
 export default function Login() {
   const navigate = useNavigate()
@@ -40,6 +42,23 @@ export default function Login() {
         console.log(errorMessage)
       });
   };
+
+  // login with mongodb 
+  const loginHandlerWithMongoDb = async () => {
+
+    const userCredential = {
+      email : email.current.value,
+      password : password.current.value
+    }
+
+    console.log(userCredential)
+   try {
+   const response =  await axios.post(`http://localhost:8500/api/auth/login`, userCredential)
+    console.log(response)
+   } catch (error) {
+    console.log(error)
+   }
+  }
   return (
     <div className="login">
       <div className="loginWrapper">
@@ -64,7 +83,7 @@ export default function Login() {
               className="loginInput"
             />
             
-            <button className="loginButton" onClick={loginHandler} >
+            <button className="loginButton" onClick={loginHandlerWithMongoDb} >
               {" "}
               Log In
             </button>

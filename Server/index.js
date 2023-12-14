@@ -1,20 +1,20 @@
 import express from 'express'
 import mongoose from 'mongoose'
-// import dotenv from 'dotenv'
 import authRouter from './routes/authRoute.js'
+import dotenv from 'dotenv'
 // import userRouter from './routes/userRoute.js'
 // import commentRouter from './routes/commentRoute.js'
 // import videoRouter from './routes/videoRoute.js'
-// import cookieParser from "cookie-parser"
-// import cors from 'cors'
+import cookieParser from "cookie-parser"
+import cors from 'cors'
 
 const app = express()
 const port = 8500
-// dotenv.config()
+dotenv.config()
 
 // MIDDLEWARES
-// app.use(cors())
-// app.use(cookieParser())
+app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 app.use('/api/auth', authRouter)
 // app.use('/api/user', userRouter)
