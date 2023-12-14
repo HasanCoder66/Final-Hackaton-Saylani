@@ -75,7 +75,8 @@ export default function Login() {
           userCredential
         );
         console.log(response);
-        dispatch(loginSuccess(response?.data))
+        // dispatch(loginSuccess(response?.data))
+        dispatch(loginSuccess(response?.data?.data))
         if (response.statusText === "OK") {
           toast.success("user Login successfully");
           setTimeout(() => {
@@ -83,9 +84,11 @@ export default function Login() {
           }, 3000);
         }
       } catch (error) {
+        if(error){
+          toast.error(error.message)
+        }
         console.log(error);
-        dispatch(loginFailed(error.response))
-
+        dispatch(loginFailed(error.message))
       }
     }
   };

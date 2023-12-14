@@ -1,9 +1,21 @@
 import React from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/Slices/authSlice";
 // import Button from "../Button";
 
 function Navbar() {
+  const { user, isLoading, error } = useSelector((state) => state.auth);
+  console.log(user)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandlerWithMongoDb = () => {
+    console.log("logout handler is working ");
+    dispatch(logout());
+    window.location.href = "/login";
+  };
   return (
     <div className="navbar navbar shadow sticky z-50 top-0 bg-white border-gray-200 px-4 lg:px-6 py-2.5">
       <div className="logo">
@@ -17,18 +29,29 @@ function Navbar() {
           </li>
         </Link>
 
-        <Link to="/login">
-          <li>
-            <a>Login</a>
-          </li>
-        </Link>
-        <Link to="/signup">
-          <li>
-            <a>Signup</a>
-          </li>
-        </Link>
-        <Link to="/login">
-          <li>
+        {user ? (
+          <Link to="">
+            <li>
+              <a>`logged in ${user}` </a>
+            </li>
+          </Link>
+        ) : (
+          <>
+            <Link to="/login">
+              <li>
+                <a>Login</a>
+              </li>
+            </Link>
+            <Link to="/signup">
+              <li>
+                <a>Signup</a>
+              </li>
+            </Link>
+          </>
+        )}
+
+        <Link>
+          <li onClick={logoutHandlerWithMongoDb}>
             <a>Logout</a>
           </li>
         </Link>
