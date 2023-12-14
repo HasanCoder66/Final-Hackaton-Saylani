@@ -6,15 +6,19 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { signupPending, signupSuccess } from "../../redux/Slices/authSlice";
 // import Footer from "../Footer/Footer";
 
 export default function Signup() {
-  const auth = getAuth();
   const navigate = useNavigate();
+  const auth = getAuth();
   const userName = useRef();
   const email = useRef();
   const password = useRef();
   const cPassword = useRef();
+  const dispatch = useDispatch();
+  const {user , isLoading , error} = useSelector((state) => state.auth);
 
   // Signup with Firebase
   const signupHandlerWithFirebase = (e) => {
@@ -57,36 +61,38 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
+    }else {
+      console.log("signup handler is working");
+
+      createUserWithEmailAndPassword(
+        auth,
+        email?.current?.value,
+        password?.current?.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+  
+          if (user) {
+            toast.success("user signup successfully");
+            setTimeout(() => {
+              navigate("/login");
+            }, 5000);
+          } else {
+            toast.warning("user not registered");
+          }
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+          // ..
+        });
     }
-    console.log("signup handler is working");
-
-    createUserWithEmailAndPassword(
-      auth,
-      email?.current?.value,
-      password?.current?.value
-    )
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log(user);
-
-        if (user) {
-          toast.success("user signup successfully");
-          setTimeout(() => {
-            navigate("/login");
-          }, 5000);
-        } else {
-          toast.warning("user not registered");
-        }
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-        // ..
-      });
+  
   };
 
   const signupHandlerWithMongoDb = async (e) => {
@@ -112,7 +118,7 @@ export default function Signup() {
         theme: "colored",
       });
     } else if (password.current.value.length < 8) {
-      toast.warning("Password must be atleast 8 characters long", {
+      toast.warning("Password must be at least 8 characters long", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -137,12 +143,22 @@ export default function Signup() {
         password: password.current.value,
       };
       // console.log(userCredential);
+      dispatch(signupPending())
       try {
         const response = await axios.post(
           `http://localhost:8500/api/auth/register`,
           userCredential
+          
         );
-        console.log(response);
+        // console.log(response?.data);
+        dispatch(signupSuccess())
+      
+        if(response.statusText   === 'OK') {
+          toast.success("user signup successfully");
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        } 
       } catch (error) {
         console.log(error);
       }
@@ -200,10 +216,12 @@ export default function Signup() {
             </div>
           </div>
         </div>
-        <ToastContainer />
+        <ToastContainer position="bottom-left" autoClose={5000} newestOnTop={false} hideProgressBar={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
       </div>
 
       {/* <Footer/> */}
     </>
   );
 }
+
+
