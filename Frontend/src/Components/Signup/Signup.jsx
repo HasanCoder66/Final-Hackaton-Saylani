@@ -14,7 +14,7 @@ export default function Signup() {
   const userName = useRef();
   const email = useRef();
   const password = useRef();
-  // const cPassword = useRef();
+  const cPassword = useRef();
 
   // Signup with Firebase
   const signupHandlerWithFirebase = (e) => {
@@ -27,7 +27,8 @@ export default function Signup() {
     if (
       email.current.value === "" ||
       userName.current.value === "" ||
-      password.current.value === ""
+      password.current.value === "" ||
+      cPassword.current.value === ""
     ) {
       // console.log("Missing fields")
       toast.error("Missing fields", {
@@ -47,7 +48,16 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
-    } 
+    } else if (password !== cPassword) {
+      toast.warning("Password does not match", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+    }
     console.log("signup handler is working");
 
     createUserWithEmailAndPassword(
@@ -82,14 +92,15 @@ export default function Signup() {
   const signupHandlerWithMongoDb = async (e) => {
     e.preventDefault();
 
-    console.log(email);
-    console.log(password);
-    console.log(userName);
+    // console.log(email);
+    // console.log(password);
+    // console.log(userName);
 
     if (
       email.current.value === "" ||
       userName.current.value === "" ||
-      password.current.value === ""
+      password.current.value === "" ||
+      cPassword.current.value === ""
     ) {
       // console.log("Missing fields")
       toast.error("Missing fields", {
@@ -100,7 +111,7 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
-    } else if (password.length < 8) {
+    } else if (password.current.value.length < 8) {
       toast.warning("Password must be atleast 8 characters long", {
         position: "top-center",
         autoClose: 5000,
@@ -109,25 +120,35 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
-    } 
-    console.log("signup handler is working");
-    const userCredential = {
-      userName: userName.current.value,
-      email: email.current.value,
-      password: password.current.value,
-    };
-
-    console.log(userCredential);
-    try {
-      const response = await axios.post(
-        `http://localhost:8500/api/auth/register`,
-        userCredential
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+    } else if (password.current.value !== cPassword.current.value) {
+      toast.warning("Password does not match", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
+    } else {
+      console.log("signup handler is working");
+      const userCredential = {
+        userName: userName.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      };
+      // console.log(userCredential);
+      try {
+        const response = await axios.post(
+          `http://localhost:8500/api/auth/register`,
+          userCredential
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
   return (
     <>
       <div className="login">
@@ -157,12 +178,12 @@ export default function Signup() {
                 className="loginInput"
                 ref={password}
               />
-              {/* <input
+              <input
                 placeholder="Confirm Password "
                 type="password"
                 className="loginInput"
                 ref={cPassword}
-              /> */}
+              />
 
               <button
                 className="loginButton"
