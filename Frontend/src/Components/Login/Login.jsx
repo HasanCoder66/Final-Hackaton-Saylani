@@ -2,12 +2,16 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "../../Firebase/config";
 import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { loginFailed, loginPending, loginSuccess } from "../../redux/Slices/authSlice";
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const { user, isLoading, error } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const auth = getAuth();
   const email = useRef();
@@ -43,22 +47,13 @@ export default function Login() {
   };
 
   // login with mongodb
-  const loginHandlerWithMongoDb = async () => {
-    if (
-      email.current.value === "" ||
-      password.current.value === "" 
-      ) {
+  const loginHandlerWithMongoDb = async (e) => {
+    e.preventDefault();
+    console.log(email, "=====>>>>> email");
+    console.log(password, "=====>>>>> password");
+    if (email.current.value === "" || password.current.value === "") {
       // console.log("Missing fields")
       toast.error("Missing fields", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        theme: "colored",
-      });
-    } else if (password.length < 8) {
-      toast.warning("Password must be atleast 8 characters long", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -73,20 +68,24 @@ export default function Login() {
       };
 
       console.log(userCredential);
+      dispatch(loginPending())
       try {
         const response = await axios.post(
           `http://localhost:8500/api/auth/login`,
           userCredential
         );
-        if(response.statusText === 'OK') {
+        console.log(response);
+        dispatch(loginSuccess(response?.data))
+        if (response.statusText === "OK") {
           toast.success("user Login successfully");
           setTimeout(() => {
             navigate("/");
           }, 3000);
         }
-        console.log(response);
       } catch (error) {
         console.log(error);
+        dispatch(loginFailed(error.response))
+
       }
     }
   };
