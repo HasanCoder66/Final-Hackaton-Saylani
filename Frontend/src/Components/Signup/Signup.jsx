@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { signupPending, signupSuccess } from "../../redux/Slices/authSlice";
+import { signupFailed, signupPending, signupSuccess } from "../../redux/Slices/authSlice";
 // import Footer from "../Footer/Footer";
 
 export default function Signup() {
@@ -160,7 +160,8 @@ export default function Signup() {
           }, 3000);
         } 
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
+        dispatch(signupFailed(error.response))
       }
     }
   };
@@ -216,7 +217,8 @@ export default function Signup() {
             </div>
           </div>
         </div>
-        <ToastContainer position="bottom-left" autoClose={5000} newestOnTop={false} hideProgressBar={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
+        <ToastContainer  />
+        {/* position="bottom-left" autoClose={5000} newestOnTop={false} hideProgressBar={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" */}
       </div>
 
       {/* <Footer/> */}
