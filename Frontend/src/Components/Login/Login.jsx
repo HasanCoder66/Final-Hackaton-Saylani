@@ -7,7 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { loginFailed, loginPending, loginSuccess } from "../../redux/Slices/authSlice";
+import {
+  loginFailed,
+  loginPending,
+  loginSuccess,
+} from "../../redux/Slices/authSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -61,22 +65,22 @@ export default function Login() {
         pauseOnHover: true,
         theme: "colored",
       });
-    }  else {
+    } else {
       const userCredential = {
         email: email.current.value,
         password: password.current.value,
       };
 
       console.log(userCredential);
-      dispatch(loginPending())
+      dispatch(loginPending());
       try {
         const response = await axios.post(
           `http://localhost:8500/api/auth/login`,
           userCredential
         );
-        console.log(response);
+        console.log(response?.data);
         // dispatch(loginSuccess(response?.data))
-        dispatch(loginSuccess(response?.data?.data))
+        dispatch(loginSuccess(response?.data));
         if (response.statusText === "OK") {
           toast.success("user Login successfully");
           setTimeout(() => {
@@ -84,11 +88,11 @@ export default function Login() {
           }, 3000);
         }
       } catch (error) {
-        if(error){
-          toast.error(error.message)
+        if (error) {
+          toast.error(error.message);
         }
         console.log(error);
-        dispatch(loginFailed(error.message))
+        dispatch(loginFailed(error.message));
       }
     }
   };
@@ -104,12 +108,14 @@ export default function Login() {
         <div className="loginRight">
           <div className="loginBox">
             <input
+              required
               placeholder="Email Address"
               type="email"
               className="loginInput"
               ref={email}
             />
             <input
+              required
               ref={password}
               placeholder=" Password"
               type="password"

@@ -1,6 +1,6 @@
 import "./Signup.css";
 import { Link } from "react-router-dom";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "../../Firebase/config";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,9 +10,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { signupFailed, signupPending, signupSuccess ,  loginFailed , loginSuccess, loginPending} from "../../redux/Slices/authSlice";
 import {auth , provider} from '../../Firebase/config'
 import { signInWithPopup } from "firebase/auth";
+import Cookies from 'js-cookie'
 // import Footer from "../Footer/Footer";
 
 export default function Signup() {
+
+  // const allCookie = Cookies.get()
+  // const cookiesArray = Object.entries(allCookie)
+
+  // const [token ,setToken ] = useState({name : '' , value : ''})
+  // const [count ,setCount ] = useState(0)
+
   // navigate from react router dom =====> 
   const navigate = useNavigate();
 
@@ -182,13 +190,17 @@ export default function Signup() {
 
   const signupHandlerWithGoogle = async () => {
     console.log('signup with google working')
+
     dispatch(loginPending())
+
+    // Cookies.set(token.name , token.value)
+
     signInWithPopup(auth, provider)
     .then((result) => {
       axios.post('http://localhost:8500/api/auth/google', {
-        name : result.user.displayName,
-        email : result.user.email,
-        img : result.user.photoURL,
+        userName : result.user.displayName,
+        email : result.user.email
+        // img : result.user.photoURL,
       }).then((res) => {
         dispatch(loginSuccess(res.data))
       })

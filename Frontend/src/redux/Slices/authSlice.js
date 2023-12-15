@@ -24,8 +24,8 @@ const authSlice  = createSlice({
         
         loginFailed: (state, {payload}) => {
             state.isLoading = false;
-            state.error = true  
-            // state.error = payload.message 
+            // state.error = true  
+            state.error = payload 
         },
         
         logout: (state) => {
