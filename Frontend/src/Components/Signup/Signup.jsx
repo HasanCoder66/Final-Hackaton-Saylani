@@ -185,7 +185,7 @@ export default function Signup() {
     dispatch(loginPending())
     signInWithPopup(auth, provider)
     .then((result) => {
-      axios.post('/auth/google', {
+      axios.post('http://localhost:8500/api/auth/google', {
         name : result.user.displayName,
         email : result.user.email,
         img : result.user.photoURL,

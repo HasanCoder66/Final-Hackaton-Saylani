@@ -3,9 +3,23 @@ import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/Slices/authSlice";
+import styled from "styled-components";
+// import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
 // import Button from "../Button";
 
-function Navbar({ setDarkMode, darkMode}) {
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  padding: 7.5px 0px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.soft};
+  }
+`;
+
+function Navbar({ setDarkMode, darkMode }) {
   const { user, isLoading, error } = useSelector((state) => state.auth);
   // console.log(user)
   const dispatch = useDispatch();
@@ -14,7 +28,7 @@ function Navbar({ setDarkMode, darkMode}) {
   const logoutHandlerWithMongoDb = () => {
     console.log("logout handler is working ");
     dispatch(logout());
-    navigate('/login')
+    navigate("/login");
     window.location.href = "/login";
   };
   return (
@@ -59,8 +73,10 @@ function Navbar({ setDarkMode, darkMode}) {
 
         {/* <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlinedIcon />
-          {darkMode ? "Light" : "Dark"} mode
+          {darkMode ? "Light" : "Dark"}
+          mode
         </Item> */}
+
         {/* <Link to="/about">
           <li>
             <a>About</a>
