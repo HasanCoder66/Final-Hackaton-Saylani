@@ -49,7 +49,7 @@ const authSlice  = createSlice({
 
 const {reducer , actions } = authSlice;
 
-export const {loginPending , loginFailed , loginSuccess , logout , signupFailed , signupPending , signupSuccess} = actions;
+export const { loginPending , loginFailed , loginSuccess , logout , signupFailed , signupPending , signupSuccess} = actions;
 
 
 export default reducer;

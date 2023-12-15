@@ -7,17 +7,31 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { signupFailed, signupPending, signupSuccess } from "../../redux/Slices/authSlice";
+import { signupFailed, signupPending, signupSuccess ,  loginFailed , loginSuccess, loginPending} from "../../redux/Slices/authSlice";
+import {auth , provider} from '../../Firebase/config'
+import { signInWithPopup } from "firebase/auth";
 // import Footer from "../Footer/Footer";
 
 export default function Signup() {
+  // navigate from react router dom =====> 
   const navigate = useNavigate();
+
+  // Firebase auth mai store kia hai ====>
   const auth = getAuth();
+
+
+  // Reference ban raha hai yaha pai input fields ka 
   const userName = useRef();
   const email = useRef();
   const password = useRef();
   const cPassword = useRef();
+
+  // ======> 🏹
+
+
   const dispatch = useDispatch();
+
+  // Destructure ====> 
   const {user , isLoading , error} = useSelector((state) => state.auth);
 
   // Signup with Firebase
@@ -44,7 +58,7 @@ export default function Signup() {
         theme: "colored",
       });
     } else if (password.length < 8) {
-      toast.warning("Password must be atleast 8 characters long", {
+      toast.warning("Password must be at least 8 characters long", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -166,6 +180,23 @@ export default function Signup() {
     }
   };
 
+  const signupHandlerWithGoogle = async () => {
+    console.log('signup with google working')
+    dispatch(loginPending())
+    signInWithPopup(auth, provider)
+    .then((result) => {
+      axios.post('/auth/google', {
+        name : result.user.displayName,
+        email : result.user.email,
+        img : result.user.photoURL,
+      }).then((res) => {
+        dispatch(loginSuccess(res.data))
+      })
+    }) 
+    .catch((error)=>{})
+    dispatch(loginFailed())
+  }
+
   return (
     <>
       <div className="login">
@@ -208,6 +239,14 @@ export default function Signup() {
               >
                 {" "}
                 Sign Up
+              </button>
+
+              <button
+                className="loginButtonWithGoogle"
+                onClick={signupHandlerWithGoogle}
+              >
+                {" "}
+                Continue with Google
               </button>
               <Link to={"/login"}>
                 <button className="loginRegisterButton">

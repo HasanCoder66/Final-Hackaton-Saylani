@@ -1,5 +1,5 @@
 import  express  from "express";
-import { register , login } from "../controller/authController.js";
+import { register , login , googleAuth} from "../controller/authController.js";
 // , , google
 
 
@@ -18,6 +18,7 @@ authRouter.post('/register' ,  register)
 authRouter.post('/login' , login)
 
 // authRouter.post('/google' , google)
+authRouter.post('/google' , googleAuth )
 
 
 export default authRouter
