@@ -1,7 +1,7 @@
 import "./Signup.css";
 import { Link } from "react-router-dom";
 import React, { useRef, useState } from "react";
-import { getAuth, createUserWithEmailAndPassword , addDoc , collection , setDoc ,  doc} from "../../Firebase/config";
+import { getAuth, createUserWithEmailAndPassword , addDoc , collection , setDoc , db, doc} from "../../Firebase/config";
 // db ,
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +19,7 @@ import {
 } from "../../redux/Slices/authSlice";
 import { auth, provider } from "../../Firebase/config";
 import { signInWithPopup } from "firebase/auth";
+import { current } from "@reduxjs/toolkit";
 // import 
 // import Cookies from "js-cookie";
 // import Footer from "../Footer/Footer";
@@ -81,15 +82,15 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
-    // } else if (password !== cPassword) {
-    //   toast.warning("Password does not match", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     theme: "colored",
-    //   });
+    } else if (password?.current?.value !== cPassword?.current?.value) {
+      toast.warning("Password does not match", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "colored",
+      });
     } else {
       console.log("signup handler is working");
 
@@ -104,17 +105,18 @@ export default function Signup() {
           console.log(user);
           console.log(user.uid);
 
-          // try {
-          //   // Add a new document in collection "cities"
-          //   await setDoc(doc(db, "user", user.uid), {
-          //     name: "Los Angeles",
-          //     state: "CA",
-          //     country: "USA"
-          //   });
-          // } catch (error) {
-            
-          // }
+         
           if (user) {
+            try {
+              // Add a new document in collection "cities"
+              await setDoc(doc(db, "user", user.uid), {
+               email : email?.current?.value ,
+               userName : userName?.current?.value
+                
+              });
+            } catch (error) {
+              console.log(error)
+            }
             toast.success("user signup successfully");
             setTimeout(() => {
               navigate("/login");
