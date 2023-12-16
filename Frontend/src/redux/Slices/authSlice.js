@@ -4,8 +4,8 @@ const initialState = {
     isLoading : false,
     user : null,
     // token :  null 
-    // error : '',
-    error : false,
+    error : '',
+    // error : false,
 };
 
 const authSlice  = createSlice({
@@ -17,7 +17,7 @@ const authSlice  = createSlice({
         },
 
         loginSuccess: (state, {payload}) => {
-            state.isLoading = true;
+            state.isLoading = false;
             state.user = payload;
             // state.token = payload.token
         },

@@ -47,7 +47,7 @@ function Navbar({ setDarkMode, darkMode }) {
         {user ? (
           <Link to="">
             <li>
-              <a>`logged in ${user}` </a>
+              <a>logged in {user.userName} </a>
             </li>
           </Link>
         ) : (

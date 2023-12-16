@@ -7,28 +7,33 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { signupFailed, signupPending, signupSuccess ,  loginFailed , loginSuccess, loginPending} from "../../redux/Slices/authSlice";
-import {auth , provider} from '../../Firebase/config'
+import {
+  signupFailed,
+  signupPending,
+  signupSuccess,
+  loginFailed,
+  loginSuccess,
+  loginPending,
+} from "../../redux/Slices/authSlice";
+import { auth, provider } from "../../Firebase/config";
 import { signInWithPopup } from "firebase/auth";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 // import Footer from "../Footer/Footer";
 
 export default function Signup() {
-
   // const allCookie = Cookies.get()
   // const cookiesArray = Object.entries(allCookie)
 
   // const [token ,setToken ] = useState({name : '' , value : ''})
   // const [count ,setCount ] = useState(0)
 
-  // navigate from react router dom =====> 
+  // navigate from react router dom =====>
   const navigate = useNavigate();
 
   // Firebase auth mai store kia hai ====>
   const auth = getAuth();
 
-
-  // Reference ban raha hai yaha pai input fields ka 
+  // Reference ban raha hai yaha pai input fields ka
   const userName = useRef();
   const email = useRef();
   const password = useRef();
@@ -36,11 +41,10 @@ export default function Signup() {
 
   // ======> 🏹
 
-
   const dispatch = useDispatch();
 
-  // Destructure ====> 
-  const {user , isLoading , error} = useSelector((state) => state.auth);
+  // Destructure ====>
+  const { user, isLoading, error } = useSelector((state) => state.auth);
 
   // Signup with Firebase
   const signupHandlerWithFirebase = (e) => {
@@ -83,7 +87,7 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
-    }else {
+    } else {
       console.log("signup handler is working");
 
       createUserWithEmailAndPassword(
@@ -95,7 +99,7 @@ export default function Signup() {
           // Signed up
           const user = userCredential.user;
           console.log(user);
-  
+
           if (user) {
             toast.success("user signup successfully");
             setTimeout(() => {
@@ -114,7 +118,6 @@ export default function Signup() {
           // ..
         });
     }
-  
   };
 
   const signupHandlerWithMongoDb = async (e) => {
@@ -165,49 +168,49 @@ export default function Signup() {
         password: password.current.value,
       };
       // console.log(userCredential);
-      dispatch(signupPending())
+      dispatch(signupPending());
       try {
-        const response = await axios.post(
-          `http://localhost:8500/api/auth/register`,
-          userCredential
-          
-        );
+        const response = await axios.post(`/api/auth/register`, userCredential);
         // console.log(response?.data);
-        dispatch(signupSuccess())
-      
-        if(response.statusText   === 'OK') {
+        dispatch(signupSuccess());
+
+        if (response.statusText === "OK") {
           toast.success("user signup successfully");
           setTimeout(() => {
             navigate("/login");
           }, 3000);
-        } 
+        }
       } catch (error) {
         console.log(error.response.data);
-        dispatch(signupFailed(error.response))
+        dispatch(signupFailed(error.response));
       }
     }
   };
 
   const signupHandlerWithGoogle = async () => {
-    console.log('signup with google working')
-
-    dispatch(loginPending())
-
-    // Cookies.set(token.name , token.value)
-
-    signInWithPopup(auth, provider)
-    .then((result) => {
-      axios.post('http://localhost:8500/api/auth/google', {
-        userName : result.user.displayName,
-        email : result.user.email
+    console.log("signup with google working");
+    try {
+      dispatch(loginPending());
+      const result = await signInWithPopup(auth, provider);
+      console.log(result);
+      console.log(result.user.displayName)
+      console.log(result.user.email)
+      const response = await axios.post("/api/auth/google", {
+        
+        userName: result.user.displayName,
+        email: result.user.email,
         // img : result.user.photoURL,
-      }).then((res) => {
-        dispatch(loginSuccess(res.data))
-      })
-    }) 
-    .catch((error)=>{})
-    dispatch(loginFailed())
-  }
+      });
+      
+      console.log(response)
+      dispatch(loginSuccess(response.data));
+      navigate('/')
+    } catch (error) {
+      dispatch(loginFailed());
+    }
+  };
+
+  // Cookies.set(token.name , token.value)
 
   return (
     <>
@@ -268,7 +271,7 @@ export default function Signup() {
             </div>
           </div>
         </div>
-        <ToastContainer  />
+        <ToastContainer />
         {/* position="bottom-left" autoClose={5000} newestOnTop={false} hideProgressBar={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" */}
       </div>
 
@@ -276,5 +279,3 @@ export default function Signup() {
     </>
   );
 }
-
-

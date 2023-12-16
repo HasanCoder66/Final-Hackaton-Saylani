@@ -82,7 +82,7 @@ export const googleAuth = async (req, res, next) => {
          .json(savedUser._doc);
      }
    } catch (error) {
-    console.log(error)
+    // console.log(error)
      next(error);
    }
  };

@@ -1,23 +1,23 @@
-import express from 'express'
-import mongoose from 'mongoose'
-import authRouter from './routes/authRoute.js'
-import dotenv from 'dotenv'
-import userRouter from './routes/userRoute.js'
+import express from 'express';
+import mongoose from 'mongoose';
+import authRouter from './routes/authRoute.js';
+import dotenv from 'dotenv';
+import userRouter from './routes/userRoute.js';
 // import commentRouter from './routes/commentRoute.js'
 // import videoRouter from './routes/videoRoute.js'
-import cookieParser from "cookie-parser"
-import cors from 'cors'
+import cookieParser from "cookie-parser";
+import cors from 'cors';
 
-const app = express()
+const app = express();
 const port = 8500
-dotenv.config()
+dotenv.config();
 
 // MIDDLEWARES
-app.use(cors())
-app.use(cookieParser())
-app.use(express.json())
-app.use('/api/auth', authRouter)
-app.use('/api/user', userRouter)
+app.use(cors());
+app.use(cookieParser());
+app.use(express.json());
+app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 // app.use('/api/video', videoRouter)
 // app.use('/api/comment', commentRouter)
 
@@ -29,7 +29,7 @@ app.use((err, req, res , next) => {
         status ,
         message  
        })
-})
+});
 
 const connect = () => {
     mongoose.connect('mongodb+srv://muhammadhasan3866:utt301xtNx6DSUVR@cluster0.uue1ckw.mongodb.net/?retryWrites=true&w=majority' )
@@ -39,10 +39,10 @@ const connect = () => {
    .catch((err)=> {
     throw err
    })
-}
+};
 
 
 app.listen( port , () => {
     console.log(`server listen on port ${port}`)
     connect()
-})
+});

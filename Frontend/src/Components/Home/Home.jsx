@@ -6,10 +6,10 @@ import About from '../About/About'
 function Home() {
   return (
     <>
-    han jani
-    {/* <Navbar />
+    {/* HOme PaGe */}
+    <Navbar /> 
     <About/>
-    <Footer/> */}
+    <Footer/>
     </>
   )
 }

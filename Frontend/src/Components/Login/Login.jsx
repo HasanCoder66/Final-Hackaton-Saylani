@@ -53,9 +53,12 @@ export default function Login() {
   // login with mongodb
   const loginHandlerWithMongoDb = async (e) => {
     e.preventDefault();
+
     console.log(email, "=====>>>>> email");
     console.log(password, "=====>>>>> password");
+
     if (email.current.value === "" || password.current.value === "") {
+
       // console.log("Missing fields")
       toast.error("Missing fields", {
         position: "top-center",
@@ -65,28 +68,30 @@ export default function Login() {
         pauseOnHover: true,
         theme: "colored",
       });
+
     } else {
+      dispatch(loginPending());
       const userCredential = {
         email: email.current.value,
         password: password.current.value,
       };
 
       console.log(userCredential);
-      dispatch(loginPending());
+
       try {
         const response = await axios.post(
-          `http://localhost:8500/api/auth/login`,
+          `/api/auth/login`,
           userCredential
         );
         console.log(response?.data);
-        // dispatch(loginSuccess(response?.data))
         dispatch(loginSuccess(response?.data));
-        if (response.statusText === "OK") {
-          toast.success("user Login successfully");
-          setTimeout(() => {
-            navigate("/");
-          }, 3000);
-        }
+        navigate("/");
+        // dispatch(loginSuccess(response?.data))
+        // toast.success("user Login successfully");
+        // setTimeout(() => {
+          // }, 3000);
+          // if(response){
+          // }
       } catch (error) {
         if (error) {
           toast.error(error.message);
@@ -101,7 +106,7 @@ export default function Login() {
       <div className="loginWrapper">
         <div className="loginLeft">
           <div className="loginLogo">
-            <img src="../../src/assets/BH_Logo_AI-01.png" alt="" />
+            <img src="" alt="pic ayi gi" />
           </div>
           {/* <span className="loginDesc">Connect with us to see new blogs.</span> */}
         </div>
