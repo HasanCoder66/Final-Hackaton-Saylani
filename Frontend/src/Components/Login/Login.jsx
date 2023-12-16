@@ -127,7 +127,7 @@ export default function Login() {
               className="loginInput"
             />
 
-            <button className="loginButton" onClick={loginHandlerWithMongoDb}>
+            <button className="loginButton" onClick={loginHandlerWithFirebase}>
               {" "}
               Log In
             </button>

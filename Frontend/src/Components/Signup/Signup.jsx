@@ -1,8 +1,10 @@
 import "./Signup.css";
 import { Link } from "react-router-dom";
 import React, { useRef, useState } from "react";
-import { getAuth, createUserWithEmailAndPassword , addDoc , collection , setDoc , db , doc} from "../../Firebase/config";
+import { getAuth, createUserWithEmailAndPassword , addDoc , collection , setDoc ,  doc} from "../../Firebase/config";
+// db ,
 import { useNavigate } from "react-router-dom";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -79,15 +81,15 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
-    } else if (password !== cPassword) {
-      toast.warning("Password does not match", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        theme: "colored",
-      });
+    // } else if (password !== cPassword) {
+    //   toast.warning("Password does not match", {
+    //     position: "top-center",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     theme: "colored",
+    //   });
     } else {
       console.log("signup handler is working");
 
@@ -100,16 +102,18 @@ export default function Signup() {
           // Signed up
           const user = userCredential.user;
           console.log(user);
-          try {
-            // Add a new document in collection "cities"
-            await setDoc(doc(db, "user", user.uid), {
-              name: "Los Angeles",
-              state: "CA",
-              country: "USA"
-            });
-          } catch (error) {
+          console.log(user.uid);
+
+          // try {
+          //   // Add a new document in collection "cities"
+          //   await setDoc(doc(db, "user", user.uid), {
+          //     name: "Los Angeles",
+          //     state: "CA",
+          //     country: "USA"
+          //   });
+          // } catch (error) {
             
-          }
+          // }
           if (user) {
             toast.success("user signup successfully");
             setTimeout(() => {
