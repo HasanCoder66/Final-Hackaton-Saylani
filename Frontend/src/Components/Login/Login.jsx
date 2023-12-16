@@ -106,7 +106,7 @@ export default function Login() {
       <div className="loginWrapper">
         <div className="loginLeft">
           <div className="loginLogo">
-            <img src="" alt="pic ayi gi" />
+            {/* <img src="https://www.shutterstock.com/image-vector/man-key-near-computer-account-260nw-1499141258.jpg" alt="pic ayi gi"  /> */}
           </div>
           {/* <span className="loginDesc">Connect with us to see new blogs.</span> */}
         </div>

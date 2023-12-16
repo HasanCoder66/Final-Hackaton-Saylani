@@ -3,23 +3,25 @@ import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/Slices/authSlice";
-import styled from "styled-components";
+// import styled from "styled-components";
 // import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
 // import Button from "../Button";
 
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  cursor: pointer;
-  padding: 7.5px 0px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.soft};
-  }
-`;
+// const Item = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 20px;
+//   cursor: pointer;
+//   padding: 7.5px 0px;
+//   color : 'black'
+//   background-color: 'black'
+//   &:hover {
+//     // background-color: ${({ theme }) => theme.soft};
+//   }
+// `;
 
 function Navbar({ setDarkMode, darkMode }) {
+  // const [darkMode , setDarkMode]
   const { user, isLoading, error } = useSelector((state) => state.auth);
   // console.log(user)
   const dispatch = useDispatch();
@@ -74,7 +76,7 @@ function Navbar({ setDarkMode, darkMode }) {
         {/* <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlinedIcon />
           {darkMode ? "Light" : "Dark"}
-          mode
+         dark mode
         </Item> */}
 
         {/* <Link to="/about">

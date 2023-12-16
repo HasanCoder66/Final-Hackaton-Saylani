@@ -1,7 +1,7 @@
 import "./Signup.css";
 import { Link } from "react-router-dom";
 import React, { useRef, useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "../../Firebase/config";
+import { getAuth, createUserWithEmailAndPassword , addDoc , collection , setDoc , db , doc} from "../../Firebase/config";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,7 +17,8 @@ import {
 } from "../../redux/Slices/authSlice";
 import { auth, provider } from "../../Firebase/config";
 import { signInWithPopup } from "firebase/auth";
-import Cookies from "js-cookie";
+// import 
+// import Cookies from "js-cookie";
 // import Footer from "../Footer/Footer";
 
 export default function Signup() {
@@ -47,7 +48,7 @@ export default function Signup() {
   const { user, isLoading, error } = useSelector((state) => state.auth);
 
   // Signup with Firebase
-  const signupHandlerWithFirebase = (e) => {
+  const signupHandlerWithFirebase =  (e) => {
     e.preventDefault();
 
     console.log(email);
@@ -95,11 +96,20 @@ export default function Signup() {
         email?.current?.value,
         password?.current?.value
       )
-        .then((userCredential) => {
+        .then( async (userCredential)  => {
           // Signed up
           const user = userCredential.user;
           console.log(user);
-
+          try {
+            // Add a new document in collection "cities"
+            await setDoc(doc(db, "user", user.uid), {
+              name: "Los Angeles",
+              state: "CA",
+              country: "USA"
+            });
+          } catch (error) {
+            
+          }
           if (user) {
             toast.success("user signup successfully");
             setTimeout(() => {
@@ -173,6 +183,7 @@ export default function Signup() {
         const response = await axios.post(`/api/auth/register`, userCredential);
         // console.log(response?.data);
         dispatch(signupSuccess());
+      
 
         if (response.statusText === "OK") {
           toast.success("user signup successfully");
@@ -250,7 +261,7 @@ export default function Signup() {
 
               <button
                 className="loginButton"
-                onClick={signupHandlerWithMongoDb}
+                onClick={signupHandlerWithFirebase}
               >
                 {" "}
                 Sign Up

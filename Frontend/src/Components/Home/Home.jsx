@@ -7,7 +7,7 @@ function Home() {
   return (
     <>
     {/* HOme PaGe */}
-    <Navbar /> 
+    <Navbar  /> 
     <About/>
     <Footer/>
     </>
