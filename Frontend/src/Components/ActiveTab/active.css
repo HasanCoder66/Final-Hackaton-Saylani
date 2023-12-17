@@ -1,0 +1,23 @@
+.d-flex {
+  display: flex;
+  /* justify-content: ; */
+}
+.add-Student {
+  position: absolute;
+  right: 0;
+  display: flex;
+  margin-top: 35px;
+  width: 150px;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+.add-Student:hover {
+  background-color: rgb(107, 107, 131);
+  color: white;
+  position: absolute;
+  right: 0;
+  /* display: flex; */
+  /* justify-content: end; */
+}

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import User from '../model/userSchema.js'
+import User from '../Modal/userSchema.js'
 // import { createError } from "../error.js";
 
 

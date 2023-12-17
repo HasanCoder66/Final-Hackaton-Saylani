@@ -8,6 +8,7 @@ import './sidebar.css'
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/Slices/authSlice";
+import Center from '../center/Center';
 function Sidebar() {
     const { user, isLoading, error } = useSelector((state) => state.auth);
     // console.log(user)
@@ -22,6 +23,8 @@ function Sidebar() {
     //   window.location.href = "/login";
     };
     return (
+        <>
+        <div className='mainDiv'>
       <div className="sideBar">
         <div className="sideBarWrapper">
           <button className=" logo">LOGO</button>
@@ -43,6 +46,10 @@ function Sidebar() {
             <button onClick={logoutHandlerWithMongoDb}>Logout</button>
         </div>
       </div>
+
+      <Center />
+      </div>
+      </>
     );
   }
   

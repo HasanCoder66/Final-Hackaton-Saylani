@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import User from "../model/userSchema.js";
+import User from "../Modal/userSchema.js";
 
 // UpdateUser
 // localhost:8000/api/:id

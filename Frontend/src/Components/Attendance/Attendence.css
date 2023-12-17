@@ -1,0 +1,7 @@
+.mainDiv {  
+    width: 100%;
+  }
+  .secDiv {
+    display: flex;
+    flex-direction: column;
+  }

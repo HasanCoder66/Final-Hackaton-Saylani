@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import authRouter from './routes/authRoute.js';
 import dotenv from 'dotenv';
 import userRouter from './routes/userRoute.js';
+import adminRouter from './routes/adminRoute.js'
+import attendanceRoutes from './routes/attendanceRoute.js'
 // import commentRouter from './routes/commentRoute.js'
 // import videoRouter from './routes/videoRoute.js'
 import cookieParser from "cookie-parser";
@@ -17,7 +19,9 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
 app.use('/api/user', userRouter);
+app.use('/api/attendance', attendanceRoutes)
 // app.use('/api/video', videoRouter)
 // app.use('/api/comment', commentRouter)
 
