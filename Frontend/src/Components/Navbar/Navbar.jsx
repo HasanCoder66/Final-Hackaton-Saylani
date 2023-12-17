@@ -1,8 +1,8 @@
 import React from "react";
 import "./Navbar.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/Slices/authSlice";
+// import { Link, useNavigate } from "react-router-dom";
+// import { useDispatch, useSelector } from "react-redux";
+// import { logout } from "../../redux/Slices/authSlice";
 // import styled from "styled-components";
 // import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
 // import Button from "../Button";
@@ -19,24 +19,34 @@ import { logout } from "../../redux/Slices/authSlice";
 //     // background-color: ${({ theme }) => theme.soft};
 //   }
 // `;
+function Navbar() {
 
-function Navbar({ setDarkMode, darkMode }) {
   // const [darkMode , setDarkMode]
   const { user, isLoading, error } = useSelector((state) => state.auth);
-  // console.log(user)
+  console.log(user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const logoutHandlerWithMongoDb = () => {
-    console.log("logout handler is working ");
-    dispatch(logout());
-    navigate("/login");
-    window.location.href = "/login";
-  };
+  // const logoutHandlerWithMongoDb = () => {
+  //   console.log("logout handler is working ");
+  //   dispatch(logout());
+  //   navigate("/login");
+  //   window.location.href = "/login";
+  // };
   return (
     <div className="navbar navbar shadow sticky z-50 top-0 bg-white border-gray-200 px-4 lg:px-6 py-2.5">
       <div className="logo">
-        {" "}
+        {user ? (
+          <Link to="">
+            <li>
+              <a> {user.userName} </a>
+            </li> 
+          </Link>
+        ) : (
+          <>
+           ''
+          </>
+        )}
         {/* <img src="../../src/assets/BH_Logo_AI-01.png" alt="Branding-Hopes " /> */}
       </div>
       <ul className="nav-links">
@@ -49,8 +59,8 @@ function Navbar({ setDarkMode, darkMode }) {
         {user ? (
           <Link to="">
             <li>
-              <a>logged in {user.userName} </a>
-            </li>
+              <a> {user.userName} </a>
+            </li> 
           </Link>
         ) : (
           <>

@@ -43,10 +43,11 @@ export default function Login() {
         }
       })
       .catch((error) => {
+        toast.error(error.message);
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        // console.log(errorCode);
+        // console.log(errorMessage);
       });
   };
 
@@ -80,7 +81,7 @@ export default function Login() {
 
       try {
         const response = await axios.post(
-          `/api/auth/login`,
+          `http://localhost:8500/api/auth/login`,
           userCredential
         );
         console.log(response?.data);
@@ -127,7 +128,7 @@ export default function Login() {
               className="loginInput"
             />
 
-            <button className="loginButton" onClick={loginHandlerWithFirebase}>
+            <button className="loginButton" onClick={loginHandlerWithMongoDb}>
               {" "}
               Log In
             </button>

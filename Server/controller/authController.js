@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../model/userSchema.js'
@@ -38,8 +37,12 @@ export const login = async (req, res, next) => {
     //    if(!user) return next(createError(404, 'user not found sorry!'))
        if(!user) return  res.send('user not found')
 
-       const isCorrect = await bcrypt.compare(req.body.password , user.password)
-       if(!isCorrect) return next(createError(400, 'wrong Credientials!'))
+       const isCorrect =  bcrypt.compare(req.body.password , user.password)
+       if(!isCorrect) return res.status(400).send(
+        {
+          message :  'wrong Credientials!'
+        }
+       )
 
        const {password, ...others} = user._doc  
        const token = jwt.sign({id : user._id  }, process.env.JWT_SECRET_KEY)

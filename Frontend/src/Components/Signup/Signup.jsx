@@ -82,6 +82,7 @@ export default function Signup() {
         pauseOnHover: true,
         theme: "colored",
       });
+    // } else if (password !== cPassword) {
     } else if (password?.current?.value !== cPassword?.current?.value) {
       toast.warning("Password does not match", {
         position: "top-center",
@@ -140,7 +141,7 @@ export default function Signup() {
     e.preventDefault();
 
     // console.log(email);
-    // console.log(password);
+    // console.log(password); 
     // console.log(userName);
 
     if (
@@ -267,7 +268,7 @@ export default function Signup() {
 
               <button
                 className="loginButton"
-                onClick={signupHandlerWithFirebase}
+                onClick={signupHandlerWithMongoDb}
               >
                 {" "}
                 Sign Up

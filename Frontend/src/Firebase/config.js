@@ -6,7 +6,6 @@ import {
   setDoc,
   collection,
   addDoc,
-  db
 } from "firebase/firestore";
 import { GoogleAuthProvider } from "firebase/auth";
 
@@ -29,11 +28,12 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
+const auth = getAuth(app);
 const db = getFirestore(app);
 export const provider = new GoogleAuthProvider();
 
 export {
+  db,
   getAuth,
   createUserWithEmailAndPassword,
   auth,
@@ -41,8 +41,6 @@ export {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  // sword,
-  db,
   doc,
   collection,
   addDoc,
