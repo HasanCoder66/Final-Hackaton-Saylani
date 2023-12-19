@@ -8,6 +8,7 @@ function Attendance() {
   return (
     <div className='mainDiv'>
       <div className='secDiv'>
+        {/* <h1>Mustafa Asif</h1> */}
         <Header />
       <ActiveTab type='attendance'/>
       <DataTable type='attendance'/>
