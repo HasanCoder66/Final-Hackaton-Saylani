@@ -6,6 +6,7 @@ import userRouter from './routes/userRoute.js';
 import adminRouter from './routes/adminRoute.js'
 import attendanceRoutes from './routes/attendanceRoute.js'
 // import commentRouter from './routes/commentRoute.js'
+// import commentRouter from './routes/commentRoute.js'
 // import videoRouter from './routes/videoRoute.js'
 import cookieParser from "cookie-parser";
 import cors from 'cors';
